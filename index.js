@@ -19,7 +19,7 @@ document.querySelectorAll('.play-sound').forEach(btn => {
     const activeLang = col.querySelector('.lang.active');
     const lang = activeLang.dataset.lang;
     const utterance = new SpeechSynthesisUtterance(textValue);
-    utterance.lang = lang === 'auto' || lang === 'detect' ? 'en' : lang; 
+    utterance.lang = lang === 'detect-language' ? 'en' : lang;
     speechSynthesis.speak(utterance);
   });
 });
@@ -33,62 +33,81 @@ document.querySelectorAll('.copy-text').forEach(btn => {
       alert("Testo copiato negli appunti!");
     } catch (err) {
       console.error(err);
-    }
+    };
   });
 });
 
 const sourceButtons = document.querySelectorAll('.col-source .lang');
 const targetButtons = document.querySelectorAll('.col-target .lang');
 
+function setActiveButton(buttons, lang) {
+  buttons.forEach(b => b.classList.remove('active'));
+  const btn = Array.from(buttons).find(b => b.dataset.lang === lang);
+  if (btn) btn.classList.add('active');
+};
+
+
 sourceButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    if (btn.dataset.lang === 'detect' || btn.dataset.lang === targetLang) return;
-    sourceButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
     sourceLang = btn.dataset.lang;
+    setActiveButton(sourceButtons, sourceLang);
+    if (sourceLang === targetLang) {
+      const fallback = Array.from(targetButtons).find(b => b.dataset.lang !== sourceLang && b.dataset.lang !== 'detect-language');
+      if (fallback) {
+        targetLang = fallback.dataset.lang;
+        setActiveButton(targetButtons, targetLang);
+      };
+    };
   });
 });
+
 
 targetButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    if (btn.dataset.lang === 'detect' || btn.dataset.lang === sourceLang) return;
-    targetButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    if (btn.dataset.lang === 'detect-language') return; 
     targetLang = btn.dataset.lang;
+    setActiveButton(targetButtons, targetLang);
+
+    if (targetLang === sourceLang) {
+      const fallback = Array.from(sourceButtons).find(b => b.dataset.lang !== targetLang && b.dataset.lang !== 'detect-language');
+      if (fallback) {
+        sourceLang = fallback.dataset.lang;
+        setActiveButton(sourceButtons, sourceLang);
+      };
+    };
   });
 });
-
 
 document.querySelector('.reverse-btn').addEventListener('click', () => {
   const tempText = sourceTextarea.value;
   sourceTextarea.value = targetTextarea.value;
   targetTextarea.value = tempText;
 
-  const sourceActive = document.querySelector('.col-source .lang.active');
-  const targetActive = document.querySelector('.col-target .lang.active');
+  const tempLang = sourceLang;
+  sourceLang = targetLang;
+  targetLang = tempLang;
 
-  sourceActive.classList.remove('active');
-  targetActive.classList.remove('active');
+  if (targetLang === 'detect-language') {
+    const fallback = Array.from(targetButtons).find(b => b.dataset.lang !== 'detect-language');
+    if (fallback) targetLang = fallback.dataset.lang;
+  };
 
-  const newSource = document.querySelector(`.col-source .lang[data-lang="${targetActive.dataset.lang}"]`);
-  const newTarget = document.querySelector(`.col-target .lang[data-lang="${sourceActive.dataset.lang}"]`);
-
-  if (newSource.dataset.lang !== 'detect') newSource.classList.add('active');
-  if (newTarget.dataset.lang !== 'detect') newTarget.classList.add('active');
-
-  sourceLang = newSource.dataset.lang;
-  targetLang = newTarget.dataset.lang;
+  setActiveButton(sourceButtons, sourceLang);
+  setActiveButton(targetButtons, targetLang);
 });
 
 document.querySelector('#translate-btn').addEventListener('click', () => {
   const textToTranslate = sourceTextarea.value.trim();
+  if (!textToTranslate) return;
+  
   fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=${sourceLang}|${targetLang}`)
     .then(res => res.json())
     .then(data => {
-     targetTextarea.value = data.responseData.translatedText;
+      targetTextarea.value = data.responseData.translatedText;
     })
     .catch(err => console.error(err));
 });
+
 
 
 
