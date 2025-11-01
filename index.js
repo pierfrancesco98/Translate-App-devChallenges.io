@@ -10,7 +10,6 @@ sourceTextarea.addEventListener('input', () => {
 let sourceLang = "en";
 let targetLang = "fr";
 
-// Text-to-speech
 document.querySelectorAll('.play-sound').forEach(btn => {
   btn.addEventListener('click', () => {
     const col = btn.closest('.col'); 
@@ -20,12 +19,11 @@ document.querySelectorAll('.play-sound').forEach(btn => {
     const activeLang = col.querySelector('.lang.active');
     const lang = activeLang.dataset.lang;
     const utterance = new SpeechSynthesisUtterance(textValue);
-    utterance.lang = lang === 'auto' || lang === 'dt' ? 'en' : lang; 
+    utterance.lang = lang === 'auto' || lang === 'dt' ? 'en-US' : lang; 
     speechSynthesis.speak(utterance);
   });
 });
 
-// Copy-to-clipboard
 document.querySelectorAll('.copy-text').forEach(btn => {
   btn.addEventListener('click', async () => {
     const col = btn.closest('.col'); 
@@ -39,52 +37,28 @@ document.querySelectorAll('.copy-text').forEach(btn => {
   });
 });
 
-// Source buttons
 const sourceButtons = document.querySelectorAll('.col-source .lang');
 const targetButtons = document.querySelectorAll('.col-target .lang');
 
 sourceButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    if (btn.dataset.lang === 'dt') return;
+    if (btn.dataset.lang === 'dt' || btn.dataset.lang === targetLang) return;
+    sourceButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
     sourceLang = btn.dataset.lang;
-
-    sourceButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
-    btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true');
-
-    const availableTargets = Array.from(targetButtons)
-      .filter(b => b.dataset.lang !== sourceLang && b.dataset.lang !== 'dt');
-
-    if (availableTargets.length > 0) {
-      targetButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
-      availableTargets[0].classList.add('active');
-      availableTargets[0].setAttribute('aria-pressed', 'true');
-      targetLang = availableTargets[0].dataset.lang;
-    }
   });
 });
 
-// Target buttons
 targetButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    if (btn.dataset.lang === 'dt') return;
+    if (btn.dataset.lang === 'dt' || btn.dataset.lang === sourceLang) return;
+    targetButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
     targetLang = btn.dataset.lang;
-
-    targetButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
-    btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true');
-
-    const availableSources = Array.from(sourceButtons)
-      .filter(b => b.dataset.lang !== targetLang && b.dataset.lang !== 'dt');
-
-    if (availableSources.length > 0) {
-      sourceButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
-      availableSources[0].classList.add('active');
-      availableSources[0].setAttribute('aria-pressed', 'true');
-      sourceLang = availableSources[0].dataset.lang;
-    }
   });
 });
 
-// Reverse
+
 document.querySelector('.reverse-btn').addEventListener('click', () => {
   const tempText = sourceTextarea.value;
   sourceTextarea.value = targetTextarea.value;
@@ -93,24 +67,19 @@ document.querySelector('.reverse-btn').addEventListener('click', () => {
   const sourceActive = document.querySelector('.col-source .lang.active');
   const targetActive = document.querySelector('.col-target .lang.active');
 
-  const tempLang = sourceActive.dataset.lang;
-  const newSourceLang = targetActive.dataset.lang;
-  const newTargetLang = tempLang;
+  sourceActive.classList.remove('active');
+  targetActive.classList.remove('active');
 
-  sourceButtons.forEach(btn => btn.classList.remove('active'));
-  targetButtons.forEach(btn => btn.classList.remove('active'));
+  const newSource = document.querySelector(`.col-source .lang[data-lang="${targetActive.dataset.lang}"]`);
+  const newTarget = document.querySelector(`.col-target .lang[data-lang="${sourceActive.dataset.lang}"]`);
 
-  const newSource = document.querySelector(`.col-source .lang[data-lang="${newSourceLang}"]`);
-  const newTarget = document.querySelector(`.col-target .lang[data-lang="${newTargetLang}"]`);
+  if (newSource.dataset.lang !== 'dt') newSource.classList.add('active');
+  if (newTarget.dataset.lang !== 'dt') newTarget.classList.add('active');
 
-  if (newSource && newSource.dataset.lang !== 'dt') newSource.classList.add('active');
-  if (newTarget && newTarget.dataset.lang !== 'dt') newTarget.classList.add('active');
-
-  sourceLang = newSourceLang;
-  targetLang = newTargetLang;
+  sourceLang = newSource.dataset.lang;
+  targetLang = newTarget.dataset.lang;
 });
 
-// Translate
 document.querySelector('#translate-btn').addEventListener('click', () => {
   const textToTranslate = sourceTextarea.value.trim();
   fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=${sourceLang}|${targetLang}`)
