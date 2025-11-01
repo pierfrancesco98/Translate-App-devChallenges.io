@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #040711;
+  color: #F9FAFB;
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
+.hero {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.logo {
+  width: 200px;
+  position: relative;
+  z-index: 999;
+}
+
+.mb {
+  display: none;
+}
+
+.hero .ds {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 9999;
+  display: flex;
+  gap: 10px;
+}
+
+.container .col {
+  background: #212936CC;
+  width: 50%;
+  border-radius: 16px;
+  border: 1px solid #4D5562;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .col.col-target {
+  background: #121826CC;
+}
+
+.language-selector {
+  padding: 10px 0 20px;
+  border-bottom: 1px solid #4D5562;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.language-selector .lang,
+.language-selector .dropdown-toggle {
+  cursor: pointer;
+  background: none;
+  outline: none;
+  border: none;
+  color: #D2D5DA;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.language-selector button.active,
+.language-selector .dropdown-toggle.active {
+  background: #4D5562;
+  border-radius: 10px;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #212936CC;
+  border: 1px solid #4D5562;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-direction: column;
+  z-index: 10;
+}
+.lang-dropdown {
+    position: relative;
+}
+.lang-dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-menu button {
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  color: #F9FAFB;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: left;
+}
+
+.text-input, .text-output {
+  width: 100%;
+  margin-top: 20px;
+}
+
+textarea {
+  width: 100%;
+  outline: none;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: #F9FAFB;
+  resize: none;
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
+.char-counter {
+  font-size: 12px;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  align-items: flex-end;
+}
+
+#translate-btn {
+  padding: 10px 15px;
+  cursor: pointer;
+  outline: none;
+  background: #263FA9;
+  border: 1px solid #7CA9F3;
+  border-radius: 10px;
+  color: #F9FAFB;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.icon-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.play-sound,
+.copy-text,
+.reverse-btn {
+  padding: 7px;
+  cursor: pointer;
+  outline: none;
+  background: transparent;
+  border: 2px solid #4D5562;
+  border-radius: 10px;
+  color: #F9FAFB;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reverse-btn {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+button[data-lang="es"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+footer {
+  padding: 20px;
+  text-align: center;
+}
+
+footer a {
+  text-decoration: none;
+  color: unset;
+}
+.auto {
+    margin-top: auto;
+}
+@media(max-width: 768px) {
+  .hero {
+    height: auto;
+  }
+  .ds {
+    display: none;
+  }
+  .mb {
+    display: block;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .container {
+    flex-direction: column;
+    width: 100%;
+  }
+  .container .col {
+    width: 100%;
+  }
+  .hero {
+    padding: 0px 20px;
+  }
+  .language-selector {
+    flex-wrap: wrap;
+  }
+  .logo {
+    margin-top: 40px;
+  }
+}

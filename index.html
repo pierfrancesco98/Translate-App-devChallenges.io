@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="resources/favicon.ico" type="image/x-icon" sizes="96x96" />
+  <title>Translate App | devChallenges.io</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <section>
+      <div class="hero">
+        <img class="logo" src="./resources/logo.svg" alt="Logo">
+        <img class="ds" src="./resources/hero_img.jpg" alt="Hero Image">
+        <img class="mb" src="./resources/hero_img-sm.jpg" alt="Hero Image Mobile">
+
+        <div class="container">
+          <div class="col col-source">
+            <div class="language-selector">
+              <button class="lang" data-lang="dt" aria-pressed="false">Detect Language</button>
+              <button class="lang active" data-lang="en" aria-pressed="true">English</button>
+              <button class="lang" data-lang="fr" aria-pressed="false">French</button>
+              <div class="lang-dropdown">
+                <button class="lang dropdown-toggle" data-lang="es" aria-pressed="false">
+                  Spanish <img src="./resources/Expand_down.svg" alt="">
+                </button>
+                <div class="dropdown-menu">
+                  <button class="lang" data-lang="en">English</button>
+                  <button class="lang" data-lang="fr">French</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-input">
+              <textarea maxlength="500" id="source-text" rows="10">Hello, how are you?</textarea>
+              <div class="char-counter">19/500</div>
+            </div>
+
+            <div class="action-buttons">
+              <div class="icon-buttons">
+                <button class="play-sound"><img src="./resources/sound_max_fill.svg" alt="Play"></button>
+                <button class="copy-text"><img src="./resources/Copy.svg" alt="Copy"></button>
+              </div>
+              <button id="translate-btn"><img src="./resources/Sort_alfa.svg" alt=""> Translate</button>
+            </div>
+          </div>
+
+         
+          <div class="col col-target">
+            <div class="language-selector">
+              <button class="reverse-btn" data-lang="reverse" aria-pressed="false">
+                <img src="./resources/Horizontal_top_left_main.svg" alt="Reverse">
+              </button>
+              <button class="lang" data-lang="en" aria-pressed="true">English</button>
+              <button class="lang active" data-lang="fr" aria-pressed="false">French</button>
+              <div class="lang-dropdown">
+                <button class="lang dropdown-toggle" data-lang="es" aria-pressed="false">
+                  Spanish <img src="./resources/Expand_down.svg" alt="">
+                </button>
+                <div class="dropdown-menu">
+                  <button class="lang" data-lang="en">English</button>
+                  <button class="lang" data-lang="fr">French</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-output">
+              <textarea maxlength="500" id="target-text" rows="10" readonly>Bonjour, comment allez-vous ?</textarea>
+            </div>
+
+            <div class="action-buttons auto">
+              <div class="icon-buttons">
+                <button class="play-sound"><img src="./resources/sound_max_fill.svg" alt="Play"></button>
+                <button class="copy-text"><img src="./resources/Copy.svg" alt="Copy"></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Created by <a href="https://pisaniwebdesign.com" target="_blank">Pierfrancesco Pisani</a> - 
+      <a href="https://www.devchallenges.io?ref=challenge" target="_blank">devChallenges.io</a>.
+    </p>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>
