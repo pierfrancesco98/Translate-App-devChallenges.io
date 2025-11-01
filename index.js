@@ -19,7 +19,7 @@ document.querySelectorAll('.play-sound').forEach(btn => {
     const activeLang = col.querySelector('.lang.active');
     const lang = activeLang.dataset.lang;
     const utterance = new SpeechSynthesisUtterance(textValue);
-    utterance.lang = lang === 'auto' || lang === 'dt' ? 'en' : lang; 
+    utterance.lang = lang === 'auto' || lang === 'detect' ? 'en' : lang; 
     speechSynthesis.speak(utterance);
   });
 });
@@ -42,7 +42,7 @@ const targetButtons = document.querySelectorAll('.col-target .lang');
 
 sourceButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    if (btn.dataset.lang === 'dt' || btn.dataset.lang === targetLang) return;
+    if (btn.dataset.lang === 'detect' || btn.dataset.lang === targetLang) return;
     sourceButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     sourceLang = btn.dataset.lang;
@@ -51,7 +51,7 @@ sourceButtons.forEach(btn => {
 
 targetButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    if (btn.dataset.lang === 'dt' || btn.dataset.lang === sourceLang) return;
+    if (btn.dataset.lang === 'detect' || btn.dataset.lang === sourceLang) return;
     targetButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     targetLang = btn.dataset.lang;
@@ -73,8 +73,8 @@ document.querySelector('.reverse-btn').addEventListener('click', () => {
   const newSource = document.querySelector(`.col-source .lang[data-lang="${targetActive.dataset.lang}"]`);
   const newTarget = document.querySelector(`.col-target .lang[data-lang="${sourceActive.dataset.lang}"]`);
 
-  if (newSource.dataset.lang !== 'dt') newSource.classList.add('active');
-  if (newTarget.dataset.lang !== 'dt') newTarget.classList.add('active');
+  if (newSource.dataset.lang !== 'detect') newSource.classList.add('active');
+  if (newTarget.dataset.lang !== 'detect') newTarget.classList.add('active');
 
   sourceLang = newSource.dataset.lang;
   targetLang = newTarget.dataset.lang;
@@ -85,9 +85,10 @@ document.querySelector('#translate-btn').addEventListener('click', () => {
   fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=${sourceLang}|${targetLang}`)
     .then(res => res.json())
     .then(data => {
-      targetTextarea.value = data.responseData.translatedText;
+     targetTextarea.value = data.responseData.translatedText;
     })
     .catch(err => console.error(err));
 });
+
 
 
