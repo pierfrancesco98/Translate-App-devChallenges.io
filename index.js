@@ -20,7 +20,7 @@ document.querySelectorAll('.play-sound').forEach(btn => {
     const activeLang = col.querySelector('.lang.active');
     const lang = activeLang.dataset.lang;
     const utterance = new SpeechSynthesisUtterance(textValue);
-    utterance.lang = lang === 'auto' || lang === 'dt' ? 'en-US' : lang; 
+    utterance.lang = lang === 'auto' || lang === 'dt' ? 'en' : lang; 
     speechSynthesis.speak(utterance);
   });
 });
@@ -120,3 +120,4 @@ document.querySelector('#translate-btn').addEventListener('click', () => {
     })
     .catch(err => console.error(err));
 });
+
