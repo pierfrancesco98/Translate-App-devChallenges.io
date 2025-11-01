@@ -18,7 +18,7 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  padding-top: 40px;
+  padding-top: 100px;
   flex-direction: column;
   gap: 40px;
 }
@@ -250,4 +250,5 @@ footer a {
     margin-top: 40px;
   }
 }
+
 
